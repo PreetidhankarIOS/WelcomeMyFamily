@@ -9,23 +9,25 @@ import Foundation
 
 
 // MARK: - DogDataAPI
-struct DogDataAPI: Codable {
+struct DogDataAPI: Codable,Identifiable {
     let weight, height: Eight
     let id: Int
     let name: String
     let countryCode: String?
-    let bredFor: String
+    let bred_for: String?
     let breedGroup: String?
     let lifeSpan, temperament, referenceImageID: String
-
+    let origin: String?
     enum CodingKeys: String, CodingKey {
-        case weight, height, id, name
+        case weight, height
+        case id, name
         case countryCode = "country_code"
-        case bredFor = "bred_for"
+        case bred_for = "bred_for"
         case breedGroup = "breed_group"
         case lifeSpan = "life_span"
         case temperament
         case referenceImageID = "reference_image_id"
+        case origin
     }
 }
 
@@ -35,3 +37,6 @@ struct Eight: Codable {
 }
 
 typealias DogDataDynamic = [DogDataAPI]
+
+
+

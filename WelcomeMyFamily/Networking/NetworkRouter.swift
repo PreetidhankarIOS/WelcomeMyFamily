@@ -18,7 +18,7 @@ final class NetworkRouter {
     
     let baseURL: String
     init(baseURL: String) {
-        self.baseURL = baseURL
+        self.baseURL = baseURL 
     }
 
     private func buildRequest(url: URL, method: HTTPMethod, headers: [String: String]?, body: Data?) -> URLRequest {

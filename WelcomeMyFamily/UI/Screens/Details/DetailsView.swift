@@ -11,13 +11,10 @@ import SwiftUI
 struct DetailsView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
     @ObservedObject var viewModel: DetailsViewModel
-    
-    init(model: DogModel) {
+    init(model: DogDataAPI) {
         viewModel = DetailsViewModel(model: model)
     }
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -25,22 +22,33 @@ struct DetailsView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         ZStack(alignment: .top) {
-                            Image(viewModel.model.image).resizable()
-                                .frame(height: 400).frame(maxWidth: .infinity)
-                            HStack {
-                                Button(action: { self.presentationMode.wrappedValue.dismiss() },
-                                       label: { Image(IMAGE_BACK_ICON).resizable().frame(width: 34, height: 34) })
-                                Spacer()
-                                Button(action: { viewModel.favouriteMethod() },
-                                       label: { Image(IMAGE_FAV_ICON).resizable().frame(width: 26, height: 26) })
-                            }.padding(.horizontal, 24).padding(.top, 46)
-                        }
+                        if let imageURL = URL(string: viewModel.model.referenceImageID) {
+                                 AsyncImage(url: imageURL) { image in
+                                     image
+                                .resizable().scaledToFill()
+                                 } placeholder: {
+                                     ProgressView() // Placeholder while loading
+                                 }
+                                 .frame(height: 400).frame(maxWidth: .infinity) //
+                             }
+//                            Image(viewModel.model.referenceImageID).resizable()
+//                                .frame(height: 400).frame(maxWidth: .infinity)
+                        HStack {
+                            Button(action: { self.presentationMode.wrappedValue.dismiss() },
+                                   label: { Image(IMAGE_BACK_ICON).resizable().frame(width: 34, height: 34) })
+                            Spacer()
+                            Button(action: { viewModel.favouriteMethod() },
+                                   label: { Image(IMAGE_FAV_ICON).resizable().frame(width: 26, height: 26) })
+                        }.padding(.horizontal, 24).padding(.top, 46)
+                    }
+                        
                         Group {
                             HStack {
                                 Text(viewModel.model.name).modifier(SailecFont(.bold, size: 24)).lineLimit(1)
                                     .foregroundColor(Color.text_primary_color)
                                 Spacer()
-                                GenderView(isMale: viewModel.model.gender == "male")
+                                Text(viewModel.model.lifeSpan).modifier(SailecFont(.bold, size: 24)).lineLimit(1)
+                               //GenderView(isMale: viewModel.model.gender == "male")
                             }.padding(.vertical, 8)
                             
                             HStack(alignment: .center) {
@@ -98,8 +106,9 @@ struct DetailsView: View {
                                 .background(Color.main_color).cornerRadius(8)
                                 .padding(.vertical, 24)
                             
-                        }.padding(.horizontal, 16).padding(.top, 8)
-                    }.background(Color.primary_color)
+                       }.padding(.horizontal, 16).padding(.top, 8)
+                    }
+                    .background(Color.primary_color)
                     
                     Spacer()
                     Spacer().frame(height: 150)
@@ -157,9 +166,10 @@ struct DetailsInfoView: View {
 
 struct DetailsView_Preview: PreviewProvider {
     static var previews: some View {
-        Group {
-            DetailsView(model: DogData.dogs[0])
-        }
+        //Group {
+           // DetailsView(model: DogData.dogs[0])
+        DetailsView(model: DogDataAPI.first[0])
+       // }
     }
 }
 

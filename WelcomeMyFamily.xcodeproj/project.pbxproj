@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		199BB51F2B85E39100BD0D4B /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 199BB51E2B85E39100BD0D4B /* URLImage */; };
+		199BB5212B85E39100BD0D4B /* URLImageStore in Frameworks */ = {isa = PBXBuildFile; productRef = 199BB5202B85E39100BD0D4B /* URLImageStore */; };
 		199CBA2B2B82F1A100803BD5 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199CBA2A2B82F1A100803BD5 /* ColorExtension.swift */; };
 		199CBA2D2B82F31100803BD5 /* FontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199CBA2C2B82F31100803BD5 /* FontModifier.swift */; };
 		199CBA2F2B82F54D00803BD5 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199CBA2E2B82F54D00803BD5 /* HomeViewModel.swift */; };
@@ -87,6 +89,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				199BB5212B85E39100BD0D4B /* URLImageStore in Frameworks */,
+				199BB51F2B85E39100BD0D4B /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +126,6 @@
 			children = (
 				19FCC7512B81EB5D003D6EF5 /* ContentView.swift */,
 				19FCC7882B81EF0D003D6EF5 /* HomeView.swift */,
-				199CBA2E2B82F54D00803BD5 /* HomeViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				199CBA302B82F6E400803BD5 /* DogModel.swift */,
 				199CBA322B82F71E00803BD5 /* PreetiModel.swift */,
 				199CBA3D2B8301CD00803BD5 /* DetailsViewModel.swift */,
+				199CBA2E2B82F54D00803BD5 /* HomeViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -293,6 +297,10 @@
 			dependencies = (
 			);
 			name = WelcomeMyFamily;
+			packageProductDependencies = (
+				199BB51E2B85E39100BD0D4B /* URLImage */,
+				199BB5202B85E39100BD0D4B /* URLImageStore */,
+			);
 			productName = WelcomeMyFamily;
 			productReference = 19FCC74C2B81EB5D003D6EF5 /* WelcomeMyFamily.app */;
 			productType = "com.apple.product-type.application";
@@ -365,6 +373,9 @@
 				Base,
 			);
 			mainGroup = 19FCC7432B81EB5D003D6EF5;
+			packageReferences = (
+				199BB51D2B85E39100BD0D4B /* XCRemoteSwiftPackageReference "url-image" */,
+			);
 			productRefGroup = 19FCC74D2B81EB5D003D6EF5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -756,6 +767,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		199BB51D2B85E39100BD0D4B /* XCRemoteSwiftPackageReference "url-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		199BB51E2B85E39100BD0D4B /* URLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 199BB51D2B85E39100BD0D4B /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImage;
+		};
+		199BB5202B85E39100BD0D4B /* URLImageStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 199BB51D2B85E39100BD0D4B /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImageStore;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		19FCC75A2B81EB5E003D6EF5 /* WelcomeMyFamily.xcdatamodeld */ = {

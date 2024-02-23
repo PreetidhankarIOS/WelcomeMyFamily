@@ -38,13 +38,24 @@ final class ProductService: ServiceProtocol {
     func fetchData() async -> Result<DogDataDynamic, APIError> {
         let baseURL = "https://api.thedogapi.com"
         let router = NetworkRouter(baseURL: baseURL)
-        
+        let path = "/v1/breeds"
         do {
-            let result: Result<DogDataDynamic, APIError> =  await router.sendRequest(path: "/v1/breeds?limit=10&page=0", method: .get)
+            let result: Result<DogDataDynamic, APIError> =  await router.sendRequest(path: path, method: .get, parameters: ["limit": "10", "page": "0"])
             return result
         }
         
     }
+//    func fetchImageData(_ image : String) async -> Result<DogDataDynamic, APIError> {
+//        let baseURL = "https://cdn2.thedogapi.com"
+//        let router = NetworkRouter(baseURL: baseURL)
+//        let path = "/images/"
+//        do {
+//            let result: Result<DogDataDynamic, APIError> =  await router.sendRequest(path: path, method: .get, parameters: ["":""])
+//            return result
+//        }
+//        
+//    }
+//    
 
 }
 

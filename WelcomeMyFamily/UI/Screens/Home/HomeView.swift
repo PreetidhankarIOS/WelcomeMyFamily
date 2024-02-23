@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-     @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel = HomeViewModel(service: ProductService())
     
     var body: some View {
         NavigationView {
@@ -29,10 +29,11 @@ struct HomeView: View {
                         Text("Nearby results").modifier(SailecFont(.bold, size: 14))
                             .foregroundColor(Color.text_primary_color)
                             .padding(.top, 24).padding(.bottom, 8)
-                        ForEach(viewModel.dogsList) { model in
+                        ForEach(viewModel.dogData) { model in
                             NavigationLink(destination: DetailsView(model: model), label: {
-                                HomeListModelView(image: model.image, name: model.name, age: model.age,
-                                                  about: model.about, location: model.location, gender: model.gender).padding(.bottom, 4)
+                            let imageURLString = "https://cdn2.thedogapi.com/images/\(model.referenceImageID).jpg"
+                                HomeListModelView(imageURLString:imageURLString, name: model.name, life_span: model.lifeSpan, temperament: model.temperament, bred_for: model.bred_for ?? "", breed_group: "", origin:model.origin ?? "")
+  
                             })
                         }
                     }
@@ -50,29 +51,54 @@ struct HomeView: View {
 
 struct HomeListModelView: View {
     
-    var image: String, name: String, age: Int, about: String, location: String, gender: String
+    //var image: String, name: String, age: Int, about: String, location: String, gender: String
+    var imageURLString: String, name: String, life_span: String, temperament: String, bred_for: String, breed_group: String, origin: String
+    
+//    "weight": {
+//    "imperial": "6 - 13",
+//    "metric": "3 - 6"
+//    },
+//    "height": {
+//    "imperial": "9 - 11.5",
+//    "metric": "23 - 29"
+//    },
+//    "id": 1,
+//    "name": "Affenpinscher",
+//    "bred_for": "Small rodent hunting, lapdog",
+//    "breed_group": "Toy",
+//    "life_span": "10 - 12 years",
+//    "temperament": "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving",
+//    "origin": "Germany, France",
+//    "reference_image_id": "BJa4kxc4X"
     
     var body: some View {
         HStack(spacing: 12) {
-            Image(image)
-                .resizable().scaledToFill()
-                .frame(width: 100, height: 100).cornerRadius(16)
+            
+            if let imageURL = URL(string: imageURLString) {
+                     AsyncImage(url: imageURL) { image in
+                         image
+                             .resizable().scaledToFill()
+                     } placeholder: {
+                         ProgressView() // Placeholder while loading
+                     }
+                     .frame(width: 150, height: 150).cornerRadius(16) // Adjust the
+                 } else {
+                     Text("Invalid URL")
+                 }
             VStack(alignment: .leading, spacing: 12) {
                 Text(name).lineLimit(1).modifier(SailecFont(.medium, size: 20)).foregroundColor(Color.text_primary_color)
-                Text("\(age) yrs | \(about)").lineLimit(1).modifier(SailecFont(.regular, size: 14)).foregroundColor(Color.text_primary_color)
+                
+                Text("\(life_span) | \(bred_for)").lineLimit(2).modifier(SailecFont(.regular, size: 14)).foregroundColor(Color.text_primary_color)
+                Text("\(temperament)").lineLimit(2).modifier(SailecFont(.regular, size: 14)).foregroundColor(Color.text_primary_color)
+                
+                
                 HStack(alignment: .center, spacing: 2) {
                     Image(IMAGE_LOC_ICON).resizable().frame(width: 20, height: 20)
-                    Text("\(location) away").modifier(SailecFont(.regular, size: 14))
+                    
+                    Text("\(origin)").modifier(SailecFont(.regular, size: 14))
                         .foregroundColor(Color.text_primary_color).padding(.top, 2)
                 }
             }
-            Spacer()
-            VStack(alignment: .trailing) {
-                GenderView(isMale: gender == "male")
-                Spacer()
-                Text("12 min ago").modifier(SailecFont(.regular, size: 12))
-                    .foregroundColor(Color.text_primary_color)
-            }.padding(.vertical, 4)
         }
         .padding(16)
         .background(Color.secondary_color)
