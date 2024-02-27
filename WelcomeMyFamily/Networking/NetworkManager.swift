@@ -45,18 +45,6 @@ final class ProductService: ServiceProtocol {
         }
         
     }
-//    func fetchImageData(_ image : String) async -> Result<DogDataDynamic, APIError> {
-//        let baseURL = "https://cdn2.thedogapi.com"
-//        let router = NetworkRouter(baseURL: baseURL)
-//        let path = "/images/"
-//        do {
-//            let result: Result<DogDataDynamic, APIError> =  await router.sendRequest(path: path, method: .get, parameters: ["":""])
-//            return result
-//        }
-//        
-//    }
-//    
-
 }
 
 //https://api.thedogapi.com/v1/breeds?limit=10&page=0

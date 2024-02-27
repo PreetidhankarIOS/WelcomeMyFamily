@@ -9,13 +9,29 @@ import XCTest
 @testable import WelcomeMyFamily
 
 final class WelcomeMyFamilyTests: XCTestCase {
+    
+    let dogListModel = HomeViewModel(service: ProductService())
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
+    func testFetchDogData_success() async {
+        let expectation = self.expectation(description: "Fetch Dog data")
+        await dogListModel.fetchPosts()
+        expectation.fulfill()
+        XCTAssertTrue(dogListModel.dogData.isEmpty == false)
+    
+        #if swift(>=5.5)
+         await wait(for: [expectation])
+        #else
+         wait(for: [expectation])
+        #endif
+ 
+        
     }
 
     func testExample() throws {

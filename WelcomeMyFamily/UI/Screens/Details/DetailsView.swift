@@ -12,6 +12,8 @@ struct DetailsView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: DetailsViewModel
+    // var viewModelOwner: PreetiModel
+    
     init(model: DogDataAPI) {
         viewModel = DetailsViewModel(model: model)
     }
@@ -22,18 +24,17 @@ struct DetailsView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         ZStack(alignment: .top) {
-                        if let imageURL = URL(string: viewModel.model.referenceImageID) {
+                            let imageURLString = "https://cdn2.thedogapi.com/images/\(viewModel.model.referenceImageID).jpg"
+                            if let imageURL = URL(string: imageURLString) {
                                  AsyncImage(url: imageURL) { image in
                                      image
-                                .resizable().scaledToFill()
+                                .resizable().scaledToFit()
                                  } placeholder: {
                                      ProgressView() // Placeholder while loading
                                  }
-                                 .frame(height: 400).frame(maxWidth: .infinity) //
+                                 .frame(height: 300).frame(maxWidth: .infinity)
                              }
-//                            Image(viewModel.model.referenceImageID).resizable()
-//                                .frame(height: 400).frame(maxWidth: .infinity)
-                        HStack {
+                    HStack {
                             Button(action: { self.presentationMode.wrappedValue.dismiss() },
                                    label: { Image(IMAGE_BACK_ICON).resizable().frame(width: 34, height: 34) })
                             Spacer()
@@ -41,27 +42,24 @@ struct DetailsView: View {
                                    label: { Image(IMAGE_FAV_ICON).resizable().frame(width: 26, height: 26) })
                         }.padding(.horizontal, 24).padding(.top, 46)
                     }
-                        
                         Group {
                             HStack {
                                 Text(viewModel.model.name).modifier(SailecFont(.bold, size: 24)).lineLimit(1)
                                     .foregroundColor(Color.text_primary_color)
                                 Spacer()
                                 Text(viewModel.model.lifeSpan).modifier(SailecFont(.bold, size: 24)).lineLimit(1)
-                               //GenderView(isMale: viewModel.model.gender == "male")
+                               GenderView(isMale: "" == "male")
                             }.padding(.vertical, 8)
-                            
                             HStack(alignment: .center) {
                                 HStack(alignment: .center, spacing: 2) {
                                     Image(IMAGE_LOC_ICON).resizable().frame(width: 24, height: 24)
-                                    Text("\(viewModel.model.location) away").modifier(SailecFont(.regular, size: 14))
+                                    Text("\(viewModel.model.origin ?? "")").modifier(SailecFont(.regular, size: 14))
                                         .foregroundColor(Color.text_primary_color).padding(.top, 2)
                                 }
                                 Spacer()
-                                Text("\(viewModel.model.age) yrs | \(viewModel.model.about)").modifier(SailecFont(.regular, size: 14))
-                                    .lineLimit(1).foregroundColor(Color.text_primary_color)
+                                Text("Breed Group : \(viewModel.model.breedGroup ?? "") | \(viewModel.model.bred_for ?? "")").modifier(SailecFont(.regular, size: 14))
+                                    .lineLimit(2).foregroundColor(Color.text_primary_color)
                             }
-                            
                             HStack {
                                 Text("12 min ago").modifier(SailecFont(.regular, size: 14))
                                     .foregroundColor(Color.text_primary_color)
@@ -74,7 +72,7 @@ struct DetailsView: View {
                                         .foregroundColor(Color.text_primary_color)
                                     Spacer()
                                 }
-                                Text(viewModel.story).modifier(SailecFont(.regular, size: 16))
+                                Text(viewModel.model.temperament).modifier(SailecFont(.regular, size: 16))
                                     .foregroundColor(Color.text_primary_color)
                             }.padding(.vertical, 16)
                             
@@ -85,9 +83,9 @@ struct DetailsView: View {
                                     Spacer()
                                 }
                                 HStack(spacing: 8) {
-                                    DetailsInfoView(primary: "\(viewModel.model.age) yrs", secondary: "Age")
-                                    DetailsInfoView(primary: "\(viewModel.model.color)", secondary: "Color")
-                                    DetailsInfoView(primary: "\(viewModel.model.weight)", secondary: "Weight")
+                                    DetailsInfoView(primary: "\(viewModel.model.lifeSpan)", secondary: "Age")
+                                    DetailsInfoView(primary: "Brown", secondary: "Color")
+                                    DetailsInfoView(primary: "29", secondary: "Weight")
                                 }
                             }.padding(.vertical, 16)
                             
@@ -97,7 +95,7 @@ struct DetailsView: View {
                                         .foregroundColor(Color.text_primary_color)
                                     Spacer()
                                 }
-                                DetailsOwnerView(image: viewModel.model.owner.image, name: viewModel.model.owner.name, bio: viewModel.model.owner.bio, messageMethod: viewModel.messageMethod)
+                               // DetailsOwnerView(image: Image("owner_image"), name: "Preeti Dhankar", bio: "Socialist & Developer", messageMethod: viewModel.messageMethod)
                             }.padding(.vertical, 16)
                             
                             Button(action: { viewModel.adoptMethod() },
@@ -113,10 +111,12 @@ struct DetailsView: View {
                     Spacer()
                     Spacer().frame(height: 150)
                 }
+                
                 .edgesIgnoringSafeArea(.all)
                 .navigationBarHidden(true)
             }
         }
+        .edgesIgnoringSafeArea(.top)
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
@@ -164,12 +164,28 @@ struct DetailsInfoView: View {
     }
 }
 
-struct DetailsView_Preview: PreviewProvider {
-    static var previews: some View {
-        //Group {
-           // DetailsView(model: DogData.dogs[0])
-        DetailsView(model: DogDataAPI.first[0])
-       // }
-    }
-}
+//struct DetailsView_Preview: PreviewProvider {
+//   
+//       static var previews: some View {
+//           DetailsView(model: <#DogDataAPI#>)
+//       }
+//
+//}
 
+
+//    "weight": {
+//    "imperial": "6 - 13",
+//    "metric": "3 - 6"
+//    },
+//    "height": {
+//    "imperial": "9 - 11.5",
+//    "metric": "23 - 29"
+//    },
+//    "id": 1,
+//    "name": "Affenpinscher",
+//    "bred_for": "Small rodent hunting, lapdog",
+//    "breed_group": "Toy",
+//    "life_span": "10 - 12 years",
+//    "temperament": "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving",
+//    "origin": "Germany, France",
+//    "reference_image_id": "BJa4kxc4X"
